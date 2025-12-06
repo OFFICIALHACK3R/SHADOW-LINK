@@ -1,0 +1,5 @@
+{
+  "name": "ShadowLink",
+  "description": "A secure, anonymous, end-to-end encrypted chat platform featuring rotating identity codes and zero-knowledge architecture. Includes an AI-powered assistant.",
+  "requestFramePermissions": []
+}
