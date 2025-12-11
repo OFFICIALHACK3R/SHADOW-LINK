@@ -1,15 +1,8 @@
-import { EncryptedPayload } from '../types';
+import { EncryptedPayload, NetworkPacket } from '../types';
 
 // Simulate a network relay
 const channel = new BroadcastChannel('shadowlink_secure_network');
 const directoryChannel = new BroadcastChannel('shadowlink_directory');
-
-interface NetworkPacket {
-  targetId: string; // Public Key of recipient
-  senderId: string; // Public Key of sender
-  payload: EncryptedPayload;
-  type: 'MSG';
-}
 
 interface DirectoryPacket {
   type: 'REGISTER' | 'QUERY' | 'RESPONSE';
@@ -24,7 +17,7 @@ interface DirectoryPacket {
 // we will use the Directory Channel to "ask" who owns a code.
 // When a user registers (comes online), they listen for queries about their code.
 
-type MessageCallback = (senderId: string, payload: EncryptedPayload) => void;
+type MessageCallback = (senderId: string, senderUsername: string, payload: EncryptedPayload, file?: File | Blob) => void;
 type DirectoryCallback = (code: string, publicKey: string, username: string) => void;
 
 let onMessageReceived: MessageCallback | null = null;
@@ -36,7 +29,7 @@ channel.onmessage = (event) => {
   const data = event.data as NetworkPacket;
   if (data.type === 'MSG' && data.targetId === myIdentity?.publicKey) {
     if (onMessageReceived) {
-      onMessageReceived(data.senderId, data.payload);
+      onMessageReceived(data.senderId, data.senderUsername, data.payload, data.fileBlob);
     }
   }
 };
@@ -71,11 +64,13 @@ export const NetworkService = {
     // Announce presence (optional in this passive model)
   },
 
-  send: (targetPublicKey: string, payload: EncryptedPayload) => {
+  send: (targetPublicKey: string, payload: EncryptedPayload, file?: File | Blob) => {
     const packet: NetworkPacket = {
       targetId: targetPublicKey,
       senderId: myIdentity?.publicKey || '',
+      senderUsername: myIdentity?.username || 'Unknown',
       payload,
+      fileBlob: file, // Passed as Transferable/Clone via BroadcastChannel
       type: 'MSG'
     };
     channel.postMessage(packet);
