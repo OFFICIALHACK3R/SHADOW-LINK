@@ -15,20 +15,11 @@ export interface Contact {
   isAI?: boolean;
 }
 
-export interface FileAttachment {
-  name: string;
-  size: number;
-  type: string;
-  data?: File | Blob; // Used for P2P transfer
-  url?: string; // Used for display after reception
-}
-
 export interface Message {
   id: string;
   senderId: string;
   recipientId: string; // 'AI' for Gemini bot
   content: string; // Decrypted content
-  attachment?: FileAttachment;
   timestamp: number;
   status: 'sending' | 'sent' | 'delivered' | 'read' | 'failed';
 }
@@ -38,11 +29,6 @@ export interface EncryptedPayload {
   data: string; // Base64
   senderPublicKey: string; // To derive shared secret
   timestamp: number;
-  attachmentMetadata?: {
-    name: string;
-    size: number;
-    type: string;
-  };
 }
 
 export interface NetworkMessage {
@@ -55,6 +41,5 @@ export interface NetworkPacket {
   senderId: string; // Public Key of sender
   senderUsername: string; // Alias of sender for auto-adding
   payload: EncryptedPayload;
-  fileBlob?: File | Blob; // Transferred "out-of-band" for P2P simulation to support 5GB
   type: 'MSG';
 }
