@@ -3,6 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Meta tags for Visibility & SEO -->
+    <meta name="description" content="ShadowLink - Secure, Anonymous, Encrypted Chat Terminal. Zero-knowledge architecture." />
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="ShadowLink | Secure Terminal Chat" />
+    <meta property="og:description" content="Anonymous, encrypted, zero-knowledge chat platform running in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1200" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Base path for GitHub Pages compatibility (handles subdirectories) -->
+    <base href="./" />
+
     <title>ShadowLink | Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -53,21 +68,21 @@
         overflow: hidden; 
       }
       
-      /* CRT Scanline Effect */
+      /* CRT Scanline Effect - Adjusted for better readability */
       .scanlines {
         background: linear-gradient(
           to bottom,
           rgba(255,255,255,0),
           rgba(255,255,255,0) 50%,
-          rgba(0,0,0,0.2) 50%,
-          rgba(0,0,0,0.2)
+          rgba(0,0,0,0.1) 50%,
+          rgba(0,0,0,0.1)
         );
         background-size: 100% 4px;
         position: fixed;
         pointer-events: none;
         top: 0; right: 0; bottom: 0; left: 0;
         z-index: 9999;
-        opacity: 0.7;
+        opacity: 0.3;
       }
       
       .scanlines::before {
@@ -78,7 +93,7 @@
         left: 0;
         bottom: 0;
         right: 0;
-        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
         z-index: 2;
         background-size: 100% 2px, 3px 100%;
         pointer-events: none;
@@ -113,6 +128,19 @@
         text-shadow: 2px 0 #cf0000, -2px 0 #008F11;
         color: #fff;
       }
+      
+      /* Initial Loader */
+      #loader {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 0;
+        font-size: 14px;
+      }
     </style>
   <script type="importmap">
 {
@@ -121,15 +149,21 @@
     "react": "https://aistudiocdn.com/react@^19.2.1",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0"
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "jszip": "https://esm.run/jszip"
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div class="scanlines"></div>
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <div id="root">
+        <div id="loader">
+            <div class="glitch-text">> INITIALIZING ENCRYPTED CONNECTION...</div>
+            <div class="mt-2 text-xs text-terminal-greenDim animate-blink">_</div>
+        </div>
+    </div>
+    <!-- Entry Point for Bundlers/Browsers -->
+    <script type="module" src="index.tsx"></script>
+  </body>
 </html>
